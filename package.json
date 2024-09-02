@@ -1,0 +1,18 @@
+{
+  "name": "pgr-encryption",
+  "version": "1.0.0",
+  "description": "Patch encryption and Unity WebRequest",
+  "private": true,
+  "main": "agent/index.ts",
+  "scripts": {
+    "prepare": "npm run build",
+    "build": "frida-compile -c src/index.ts -o Patch.js",
+    "watch": "frida-compile src/index.ts -o Patch.js -w",
+    "spawn": "npm run build && frida -f \"D:\\Punishing Gray Raven\\Punishing Gray Raven Game\\PGR.exe\" -l Patch.js"
+  },
+  "devDependencies": {
+    "@types/frida-gum": "^18.5.1",
+    "@types/node": "^18.19.3",
+    "frida-compile": "^16.4.1"
+  }
+}
