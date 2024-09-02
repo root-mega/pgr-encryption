@@ -30,8 +30,7 @@ async function main(): Promise<void> {
         
         if (Config.useRedir) {
             try {
-                console.log("[Redir] WIP")
-                //Redir.InitHook(GameAssembly.base);
+                Redir.InitHook(GameAssembly.base);
             } catch (error) {
                 console.error("[Redir] Failed to initialize hook:", error);
             }
