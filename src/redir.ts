@@ -1,12 +1,13 @@
 import { Config } from "./config.js";
 
-function replaceHostAndPort(url: string, newHost: string, newPort: string): string {
-    const urlPattern = /^(https?:\/\/)([^:/\s]+)(:\d+)?(\/.*)?$/;
-    
-    return url.replace(urlPattern, (match, protocol, oldHost, oldPort, path) => {
-        return `${protocol}${newHost}${newPort ? `:${newPort}` : ''}${path || ''}`;
-    });
+function replaceHostname(url: string): string {
+    const protocolEnd = url.indexOf('//') + 2;
+    const pathStart = url.indexOf('/', protocolEnd);
+    const newUrl = url.substring(0, protocolEnd) + Config.redirData.ip + ":" + Config.redirData.port.toString() + url.substring(pathStart);
+
+    return newUrl;
 }
+
 
 export class Redir {
     static WebRequestSetUrlPtr: NativePointer = ptr(0x2AAE950);
@@ -24,7 +25,7 @@ export class Redir {
                     if (requestUrl.includes(Config.redirData.ip + ":" + Config.redirData.port)) return;
                     
                     var prefix = requestUrl.split('/', 3).join('/');
-                    args[1] = Redir.Il2CppNewUtf16(replaceHostAndPort(requestUrl, Config.redirData.ip, Config.redirData.port));
+                    args[1] = Redir.Il2CppNewUtf16(replaceHostname(requestUrl));
                     
                     console.log("[Redir] Successfully redirected " + requestUrl);
                 }
@@ -38,7 +39,7 @@ export class Redir {
                     if (requestUrl.includes(Config.redirData.ip + ":" + Config.redirData.port)) return;
                     
                     var prefix = requestUrl.split('/', 3).join('/');
-                    args[1] = Redir.Il2CppNewUtf16(replaceHostAndPort(requestUrl, Config.redirData.ip, Config.redirData.port));
+                    args[1] = Redir.Il2CppNewUtf16(replaceHostname(requestUrl));
                     
                     console.log("[Redir] Successfully redirected " + requestUrl);
                 }

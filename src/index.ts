@@ -1,4 +1,5 @@
 import { Config } from "./config.js";
+import { Debug } from "./debug.js";
 import { Redir } from "./redir.js";
 
 function writeMemory(address: NativePointer, data: Uint8Array): void {
@@ -35,6 +36,11 @@ async function main(): Promise<void> {
                 console.error("[Redir] Failed to initialize hook:", error);
             }
         }
+
+        if (Config.useDebug) {
+            Debug.InitHook(GameAssembly.base);
+        }
+
     } else {
         console.error("[Patch] GameAssembly module could not be found.");
     }
